@@ -1,8 +1,7 @@
 ﻿namespace HRM.Web.ViewModel
 {
-    public partial class Employee
+    public partial class EmployeeVM
     {
-        public int Id { get; set; }
 
         public string EmployeeName { get; set; } = null!;
 

@@ -1,0 +1,25 @@
+﻿@model List<HRM.Web.ViewModel.EmployeeVM>
+<h1>Employee</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model)
+        {
+            <tr>
+                <td>@employee.EmployeeName</td>
+                <td>@employee.Department</td>
+                <td>@employee.Department</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+

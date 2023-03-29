@@ -1,12 +1,31 @@
+﻿using AutoMapper;
+using HRM.DAL.Models;
+using HRM.Web;
+using HRM.Web.ViewModel;
 using Microsoft.AspNetCore.Hosting;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllersWithViews();
 
+//builder.Services.Add(typeof(Program));
+
+
+var config = new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile(new AutoMapperProfile());
+});
+
+var mapper = config.CreateMapper();
+
+builder.Services.AddSingleton(mapper);
+
+builder.Services.AddDbContext<HrmContext>();
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -25,6 +44,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Employee}/{action=Index}/{id?}");
 
 app.Run();
