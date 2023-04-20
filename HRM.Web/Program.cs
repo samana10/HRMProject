@@ -4,6 +4,7 @@ using HRM.Web;
 using HRM.Web.ViewModel;
 using Microsoft.AspNetCore.Hosting;
 using System.Reflection;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,23 @@ var config = new MapperConfiguration(cfg =>
 var mapper = config.CreateMapper();
 
 builder.Services.AddSingleton(mapper);
+
+//redis connection
+var redisEndpointUrl = (Environment.GetEnvironmentVariable("REDIS_ENDPOINT_URL") ?? "127.0.0.1:6379").Split(':');
+var redisHost = redisEndpointUrl[0];
+var redisPort = redisEndpointUrl[1];
+
+string redisConnectionUrl = string.Empty;
+var redisPassword = Environment.GetEnvironmentVariable("REDIS_PASSWORD");
+if (redisPassword != null)
+{
+    redisConnectionUrl = $"{redisHost}:{redisPort},password={redisPassword}";
+}
+else
+{
+    redisConnectionUrl = $"{redisHost}:{redisPort}";
+}
+builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionUrl));
 
 builder.Services.AddDbContext<HrmContext>();
 

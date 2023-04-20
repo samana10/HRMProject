@@ -1,12 +1,12 @@
 ﻿@model List<HRM.Web.ViewModel.EmployeeVM>
 <h1>Employee</h1>
 
-<table>
+<table border="1">
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Email</th>
+            <th>Employee Name</th>
+            <th>Department</th>
+            <th>Age</th>
         </tr>
     </thead>
     <tbody>
@@ -15,7 +15,7 @@
             <tr>
                 <td>@employee.EmployeeName</td>
                 <td>@employee.Department</td>
-                <td>@employee.Department</td>
+                <td>@employee.Age</td>
             </tr>
         }
     </tbody>
