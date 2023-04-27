@@ -2,7 +2,7 @@
 {
     public partial class EmployeeVM
     {
-
+        public int Id { get; set; }
         public string EmployeeName { get; set; } = null!;
 
         public string Address { get; set; } = null!;

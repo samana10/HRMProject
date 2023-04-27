@@ -1,25 +1,110 @@
 ﻿@model List<HRM.Web.ViewModel.EmployeeVM>
-<h1>Employee</h1>
+<h1 style="color:white">Employee</h1>
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>Employee Name</th>
-            <th>Department</th>
-            <th>Age</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var employee in Model)
-        {
+
+<style>
+    .table {
+        background-color: white;
+        color: black;
+    }
+
+    th {
+        background-color: #1b6ec2 !important;
+        color: #2d3c72;
+    }
+
+    #employee-pagination li a {
+        margin-right: 10px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        color: #333;
+        width: 10px;
+    }
+
+    #employee-pagination li.active a {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+        width: 10px;
+    }
+
+</style>
+
+<div id="employee-table">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <p style="color:white;">Showing <span id="start-row">1</span> to <span id="end-row">5</span> of <span id="total-rows">@Model.Count()</span> rows</p>
+        </div>
+        <div class="col-md-6 text-end">
+            <ul id="employee-pagination" class="pagination justify-content-end"></ul>
+        </div>
+    </div>
+
+    <table class="table table-striped table-responsive table-hover">
+        <thead>
             <tr>
-                <td>@employee.EmployeeName</td>
-                <td>@employee.Department</td>
-                <td>@employee.Age</td>
+                <th>ID</th>
+                <th>Employee Name</th>
+                <th>Department</th>
+                <th>Age</th>
+            
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model)
+            {
+                <tr>
+                    <td>@employee.Id</td>
+                    <td>@employee.EmployeeName</td>
+                    <td>@employee.Department</td>
+                    <td>@employee.Age</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section scripts {
+    <script>
+        $(function () {
+            var rowsPerPage = 15;
+            var totalRows = $('#employee-table tbody tr').length;
+            var numPages = Math.ceil(totalRows / rowsPerPage);
+
+            // Add the page links to the pagination element
+            for (var i = 1; i <= numPages; i++) {
+                var pageLink = $('<a>', { href: '#', text: i });
+                var listItem = $('<li>', { class: 'page-item' }).append(pageLink);
+                $('#employee-pagination').append(listItem);
+            }
+
+            // Show the first page of rows
+            $('#employee-table tbody tr').hide().slice(0, rowsPerPage).show();
+
+            // Update the row count and pagination links when a page link is clicked
+            $('#employee-pagination').on('click', 'a', function (e) {
+                e.preventDefault();
+                var pageNum = $(this).text();
+                var startRow = (pageNum - 1) * rowsPerPage;
+                var endRow = startRow + rowsPerPage;
+
+                $('#employee-table tbody tr').hide().slice(startRow, endRow).show();
+
+                // Highlight the current page link
+                $('#employee-pagination li').removeClass('active');
+                $(this).parent().addClass('active');
+
+                // Update the row count
+                $('#start-row').text(startRow + 1);
+                $('#end-row').text(Math.min(endRow, totalRows));
+            });
+
+            // Highlight the first page link by default
+            $('#employee-pagination li:first-child').addClass('active');
+        });
+    </script>
+}
+
 
 
 

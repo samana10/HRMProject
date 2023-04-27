@@ -41,6 +41,7 @@ else
 builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionUrl));
 
 builder.Services.AddDbContext<HrmContext>();
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
@@ -62,6 +63,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Employee}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
